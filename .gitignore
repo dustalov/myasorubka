@@ -1,0 +1,37 @@
+## MAC OS
+.DS_Store
+
+## TEXTMATE
+*.tmproj
+tmtags
+
+## EMACS
+*~
+\#*
+.\#*
+
+## VIM
+*.swp
+
+## RUBINIUS
+*.rbc
+
+## NETBEANS
+nbproject
+
+## REDCAR
+.redcar
+
+## RVM
+.rvmrc
+
+## BUNDLER
+.bundle
+
+## PROJECT::GENERAL
+
+## PROJECT::SPECIFIC
+*.tct
+*.dec
+*.lex
+*.tsv
