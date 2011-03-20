@@ -66,9 +66,10 @@ class Myasorubka::Converter
       parts = line.split
       parts << '' while parts.size < 4
 
-      store.patterns[parts[0]] = Myasorubka::Pattern.new(
-        parts[3], parts[2]
-      ).to_hash
+      store.patterns[parts.first] = {
+        'grammemes' => parts[3],
+        'pos' => parts[2]
+      }
 
       if (i + 1) % 50 == 0
         STDOUT.print(i + 1)
