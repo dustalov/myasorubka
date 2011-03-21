@@ -177,7 +177,7 @@ class Myasorubka::Converter
         line = morphs_file.readline
         # anyway we must pass the entire section
         next unless block
-        line.force_encoding('UTF-8')
+        line.force_encoding('UTF-8').strip!
         block.call(line, i)
 
         if (i + 1) % 50 == 0
