@@ -14,10 +14,10 @@ configuration = {
 
 desc 'Convert the AOT project dictionaries'
 task :aot do
-  configuration[:morphs] = ENV['morphs'] or raise ArgumentError,
-    "ENV['morphs'] is not set."
-  configuration[:gramtab] = ENV['gramtab'] or raise ArgumentError,
-    "ENV['gramtab'] is not set."
+  configuration[:mrd] = ENV['mrd'] or raise ArgumentError,
+    "ENV['mrd'] is not set."
+  configuration[:tab] = ENV['tab'] or raise ArgumentError,
+    "ENV['tab'] is not set."
   configuration[:language] = ENV['encoding'] or raise ArgumentError
   configuration[:language] = configuration[:language].to_sym
   configuration[:encoding] = ENV['encoding'] || 'CP-1251'
