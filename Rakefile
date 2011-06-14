@@ -1,29 +1,33 @@
 # encoding: utf-8
 
 require 'rubygems'
+
 require 'bundler/setup'
-Bundler.require(:default, :development)
+Bundler.require(:default)
 
 $:.unshift File.expand_path('../lib', __FILE__)
 require 'myasorubka'
 
-options = {}
+configuration = {
+  :path => ENV['path'] || nil
+}
 
-task :options do
-  options[:morphs] = ENV['morphs'] or
-    raise ArgumentError, "ENV['morphs'] is not set."
-  options[:gramtab] = ENV['gramtab'] or
-    raise ArgumentError, "ENV['gramtab'] is not set."
-  options[:encoding] = ENV['encoding']
-end
+desc 'Convert the AOT project dictionaries'
+task :aot do
+  configuration[:morphs] = ENV['morphs'] or raise ArgumentError,
+    "ENV['morphs'] is not set."
+  configuration[:gramtab] = ENV['gramtab'] or raise ArgumentError,
+    "ENV['gramtab'] is not set."
+  configuration[:language] = ENV['encoding'] or raise ArgumentError
+  configuration[:language] = configuration[:language].to_sym
+  configuration[:encoding] = ENV['encoding'] || 'CP-1251'
 
-desc 'Perform conversion'
-task :convert => :options do
-  Myasorubka::Converter.new(
-    options[:morphs],
-    options[:gramtab],
-    options[:encoding]
-  ).execute!
+  require 'myasorubka/adapters/aot'
+  Myasorubka::Processor.new(configuration.merge(
+    {
+      :adapter => Myasorubka::AOT
+    }
+  )).run!
 end
 
 desc 'Cleanup'
@@ -35,4 +39,4 @@ task :clean do
   end
 end
 
-task :default => :convert
+task :default => :list
