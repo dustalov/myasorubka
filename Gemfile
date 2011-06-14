@@ -2,7 +2,7 @@
 
 source 'http://rubygems.org'
 
-gem 'tokyocabinet'
-gem 'shkuph', :git => 'git://github.com/eveel/shkuph'
-gem 'activesupport', :require => 'active_support/core_ext'
-gem 'i18n' # sucks, but is required by activesupport
+gem 'rake'
+
+gem 'activesupport', :require => 'active_support/core_ext/string/multibyte'
+gem 'myaso', :git => 'git://github.com/eveel/myaso.git', :branch => 'revival'
