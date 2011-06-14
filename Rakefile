@@ -18,7 +18,7 @@ task :aot do
     "ENV['mrd'] is not set."
   configuration[:tab] = ENV['tab'] or raise ArgumentError,
     "ENV['tab'] is not set."
-  configuration[:language] = ENV['encoding'] or raise ArgumentError
+  configuration[:language] = ENV['language'] or raise ArgumentError
   configuration[:language] = configuration[:language].to_sym
   configuration[:encoding] = ENV['encoding'] || 'CP-1251'
 
