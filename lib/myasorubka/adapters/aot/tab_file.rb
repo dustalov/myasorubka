@@ -22,14 +22,23 @@ class Myasorubka::AOT
     def initialize(tab_file) # :nodoc:
       @ancodes = {}
 
+      id = 0
       tab_file.rewind
       tab_file.each do |line|
         line.force_encoding('UTF-8').strip!
         next if line.empty? || line.start_with?('//')
         ancode, unused_number, pos, grammemes = line.split
 
-        ancodes[ancode] = { :pos => pos, :grammemes => grammemes || '' }
+        ancodes[ancode] = {
+          :id => id, :pos => pos,
+          :grammemes => grammemes || ''
+        }
+        id += 1
       end
+    end
+
+    def find_by_id id # :nodoc:
+      ancodes.find { |k, v| v[:id] == id }
     end
   end
 end
