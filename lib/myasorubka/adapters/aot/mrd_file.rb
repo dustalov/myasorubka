@@ -71,7 +71,7 @@ class Myasorubka::AOT # :nodoc:
         line.split('%').map_with_index do |rule_line|
           next unless rule_line && !rule_line.empty?
           suffix, ancode, prefix = rule_line.split('*')
-          [ suffix, ancode, prefix || '' ]
+          [ suffix, ancode.mb_chars[0..1].to_s, prefix || '' ]
         end.delete_if { |x| !x }
       end
     end
@@ -101,7 +101,7 @@ class Myasorubka::AOT # :nodoc:
         stem, rule_id, accent_id,
           session_id, ancode, prefix_id = line.split
         [ stem, rule_id.to_i, accent_id.to_i, session_id.to_i,
-          ancode == '-' ? nil : ancode,
+          ancode == '-' ? nil : ancode.mb_chars[0..1].to_s,
           prefix_id == '-' ? nil : prefix_id.to_i ]
       end
     end
