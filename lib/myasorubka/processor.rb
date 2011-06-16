@@ -28,11 +28,13 @@ class Myasorubka::Processor
   # Executes the adapter with given configuration.
   #
   def run!
+    logger.info 'Started'
     Myaso::Database.new(Dir.getwd, :manage).tap do |db|
       db.reindex
       adapter.run! db, logger
       db.close!
     end
+    logger.info 'Finished'
   end
 
   # Logger instance.
