@@ -119,8 +119,6 @@ class Myasorubka::AOT
       def self.definiteness(msd, grammemes)
         msd[:definiteness] = if grammemes.include? 'кр'
           :short_art
-        else
-          :full_art
         end
         msd
       end
@@ -128,8 +126,6 @@ class Myasorubka::AOT
       def self.degree(msd, grammemes)
         msd[:degree] = if grammemes.include? 'сравн'
           :comparative
-        else
-          :positive
         end
         msd
       end
@@ -173,6 +169,8 @@ class Myasorubka::AOT
         else
           :possessive
         end
+        msd[:degree] = :positive
+        msd[:definiteness] = :full_art
         [ :degree, :gender, :number, :case, :definiteness ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
         end
@@ -203,6 +201,7 @@ class Myasorubka::AOT
         msd[:vform] = if grammemes.include? 'пвл'
           :imperative 
         end
+        msd[:definiteness] = :full_art
         [ :tense, :person, :number, :gender, :voice, :definiteness,
           :aspect, :case ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
@@ -211,6 +210,7 @@ class Myasorubka::AOT
       when 'ПРИЧАСТИЕ' then begin
         msd[:pos] = :verb
         msd[:vform] = :participle
+        msd[:definiteness] = :full_art
         [ :tense, :person, :number, :gender, :voice, :definiteness,
           :aspect, :case ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
@@ -219,6 +219,7 @@ class Myasorubka::AOT
       when 'ДЕЕПРИЧАСТИЕ' then begin
         msd[:pos] = :verb
         msd[:vform] = :gerund
+        msd[:definiteness] = :full_art
         [ :tense, :person, :number, :gender, :voice, :definiteness,
           :aspect, :case ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
@@ -227,6 +228,7 @@ class Myasorubka::AOT
       when 'ИНФИНИТИВ' then begin
         msd[:pos] = :verb
         msd[:vform] = :infinitive
+        msd[:definiteness] = :full_art
         [ :tense, :person, :number, :gender, :voice, :definiteness,
           :aspect, :case ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
@@ -248,12 +250,14 @@ class Myasorubka::AOT
       end
       when 'Н' then begin
         msd[:pos] = :adverb
+        msd[:degree] = :positive
         [ :degree ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
         end
       end
       when 'ПРЕДК' then begin
         msd[:pos] = :adverb
+        msd[:degree] = :positive
         [ :degree ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
         end
@@ -284,6 +288,7 @@ class Myasorubka::AOT
         else
           :possessive
         end
+        msd[:degree] = :positive
         [ :degree, :gender, :number, :case ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
         end
