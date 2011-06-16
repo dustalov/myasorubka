@@ -34,7 +34,16 @@ class Myasorubka::AOT
   end
 
   def run! db, logger # :nodoc:
-    logger.info "Started"
+    # gramtab -> msds
+    tab.ancodes.each_with_index do |(ancode, attrs), msd_id|
+      pos, grammemes = attrs[:pos], attrs[:grammemes]
+      msd = Myasorubka::AOT::MSD.send(language, pos, grammemes)
+      db.msds[msd_id] = Myasorubka::AOT::MSD.include_msd({
+        'pos' => msd.pos.to_s,
+        'ancode' => ancode # it is unnecessary, but let it be
+      }, msd)
+    end
+    logger.info "MSDs: done (#{db.msds.size})"
 
     # prefixes -> prefixes
     mrd.prefixes.each_with_index do |prefix, id|
@@ -42,63 +51,59 @@ class Myasorubka::AOT
     end
     logger.info "Prefixes: done (#{db.prefixes.size})"
 
-    # rules -> suffixes
-    suffix_id = 0
-    mrd.rules.each do |rules|
-      rules.each do |suffix, *anything|
-        unless db.suffixes.has_suffix? suffix
-          db.suffixes[suffix_id] = { 'suffix' => suffix }
-          suffix_id += 1
+    # rules -> rules
+    rule_id = 0
+    mrd.rules.each_with_index do |rules, rule_set_id|
+      rules.each do |suffix, ancode, prefix|
+        db.rules[rule_id] = {
+          'msd_id' => tab.ancodes[ancode][:id],
+          'rule_set_id' => rule_set_id,
+          'prefix' => prefix,
+          'suffix' => suffix
+        }
+        rule_id += 1
+        if 0 == rule_id % 1_000
+          logger.info "Rules: now (#{rule_id}): #{suffix} => #{ancode}"
         end
       end
     end
-    logger.info "Suffixes: done (#{db.suffixes.size})"
+    logger.info "Rules: done (#{db.rules.size})"
 
     # lemmas + rules -> stems + words
-    stem_id, word_id = 0, 0
-    mrd.lemmas.each do |stem, rule_id, accent_id, session_id, lancode, prefix_id|
-      unless word_stem_id = db.stems.first_stem(stem, rule_id)
-        db.stems[stem_id] = { 'stem' => stem, 'rule_id' => rule_id }
-        word_stem_id = stem_id
-        stem_id += 1
+    word_id = 0
+    mrd.lemmas.each_with_index do |lemma, stem_id|
+      stem, rule_set_id, accent_id, session_id, ancode, prefix_id = lemma
+
+      stem_hash = {
+        'rule_set_id' => rule_set_id,
+        'stem' => stem
+      }
+      if ancode_hash = tab.ancodes[ancode]
+        stem_hash['msd_id'] = ancode_hash[:id]
       end
+      db.stems[stem_id] = stem_hash
 
-      mrd.rules[rule_id].each do |suffix, rancode, prefix|
-        suffix_id = db.suffixes.first_suffix(suffix)
+      db.rules.select_by_rule_set(rule_set_id).each do |rule_id|
+        db.words[word_id] = {
+          'stem_id' => stem_id,
+          'rule_id' => rule_id
+        }
 
-        pattern = tab.ancodes[rancode]
-        pos = pattern[:pos]
-        grammemes = pattern[:grammemes]
-
-        if lancode && !lancode.empty?
-          pattern = tab.ancodes[lancode]
-          grammemes = "#{grammemes},#{pattern[:grammemes]}"
-          #grammemes.insert(-1, ',').insert(-1, pattern[:grammemes])
-        end
-
-        msd = Myasorubka::AOT::MSD.send(language, pos, grammemes)
-
-        db.words[word_id] = { 'msd' => msd,
-                              'prefix' => prefix,
-                              'stem_id' => word_stem_id,
-                              'suffix_id' => suffix_id }
         word_id += 1
 
-        if 0 == word_id % 1_000
+        if 0 == word_id % 5_000
           last_word = db.assemble(word_id - 1)
           logger.info "Words: now (#{word_id}): #{last_word}"
         end
       end
 
-      if 0 == stem_id % 1_000
-        last_stem = db.stems[stem_id - 1]['stem']
-        logger.info "Stems: now (#{stem_id}): #{last_stem}"
+      if 0 == (stem_id + 1) % 1_000
+        last_stem = db.stems[stem_id]['stem']
+        logger.info "Stems: now (#{stem_id + 1}): #{last_stem}"
       end
     end
     logger.info "Words: done (#{db.words.size})"
     logger.info "Stems: done (#{db.stems.size})"
-
-    logger.info "Finished"
   end
 
   private
