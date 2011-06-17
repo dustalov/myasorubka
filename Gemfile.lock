@@ -1,10 +1,10 @@
 GIT
   remote: git://github.com/eveel/myaso.git
-  revision: 097a763a7f5eca6e5d70fcf7675ab9c146626d0d
+  revision: 18b70e9c0fdea5718e0545890fd61b403040f3ec
   branch: revival
   specs:
     myaso (0.3.0.pre)
-      activesupport (~> 3.0.8)
+      activesupport (~> 3.0.0)
       i18n (~> 0.6)
       thor (~> 0.14)
       tokyocabinet (~> 1.29)
@@ -12,7 +12,7 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
-    activesupport (3.0.8)
+    activesupport (3.0.9)
     i18n (0.6.0)
     rake (0.9.2)
     thor (0.14.6)
