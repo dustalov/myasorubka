@@ -21,7 +21,7 @@ class Myasorubka::AOT
           :feminine
         elsif grammemes.include? 'ср'
           :neuter
-        elsif :noun == msd[:pos]
+        elsif grammemes.include? 'мр-жр'
           :common
         end
         msd
@@ -126,6 +126,8 @@ class Myasorubka::AOT
       def self.degree(msd, grammemes)
         msd[:degree] = if grammemes.include? 'сравн'
           :comparative
+        elsif grammemes.include? 'прев'
+          :superlative
         end
         msd
       end
