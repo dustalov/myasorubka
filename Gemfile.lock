@@ -1,7 +1,6 @@
 GIT
   remote: git://github.com/eveel/myaso.git
   revision: 18b70e9c0fdea5718e0545890fd61b403040f3ec
-  branch: revival
   specs:
     myaso (0.3.0.pre)
       activesupport (~> 3.0.0)
