@@ -168,7 +168,7 @@ class Myasorubka::AOT
         msd[:pos] = :adjective
         msd[:type] = if grammemes.include? 'кач'
           :qualificative
-        else
+        elsif grammemes.include? 'притяж'
           :possessive
         end
         msd[:degree] = :positive
@@ -179,12 +179,14 @@ class Myasorubka::AOT
       end
       when 'МС' then begin
         msd[:pos] = :pronoun
+        msd[:type] = :possessive if grammemes.include? 'притяж'
         [ :person, :gender, :number, :case, :animate ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
         end
       end
       when 'МС-ПРЕДК' then begin
         msd[:pos] = :pronoun
+        msd[:type] = :possessive if grammemes.include? 'притяж'
         msd[:case] = :genititive
         [ :person, :gender, :number, :animate ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
@@ -192,6 +194,7 @@ class Myasorubka::AOT
       end
       when 'МС-П' then begin
         msd[:pos] = :pronoun
+        msd[:type] = :possessive if grammemes.include? 'притяж'
         msd[:syntactic_type] = :adjectival
         [ :person, :gender, :number, :case, :animate ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
@@ -287,7 +290,7 @@ class Myasorubka::AOT
         msd[:pos] = :adjective
         msd[:type] = if grammemes.include? 'кач'
           :qualificative
-        else
+        elsif grammemes.include? 'притяж'
           :possessive
         end
         msd[:degree] = :positive
