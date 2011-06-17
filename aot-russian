@@ -1,0 +1,2 @@
+#!/bin/sh
+rake clean aot mrd=../rml/trunk/Dicts/SrcMorph/RusSrc/morphs.mrd tab=../rml/trunk/Dicts/Morph/rgramtab.tab encoding=CP1251 language=russian
