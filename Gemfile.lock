@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/eveel/myaso.git
-  revision: 18b70e9c0fdea5718e0545890fd61b403040f3ec
+  revision: 3707a2453b7c950a5ea7ede029768fa2f90a62e7
   specs:
     myaso (0.3.0.pre)
       activesupport (~> 3.0.0)
