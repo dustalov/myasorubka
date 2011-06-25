@@ -100,7 +100,8 @@ class Myasorubka::AOT # :nodoc:
       @lemmas ||= Section.new(lines, lemmas_offset) do |line|
         stem, rule_id, accent_id,
           session_id, ancode, prefix_id = line.split
-        [ stem, rule_id.to_i, accent_id.to_i, session_id.to_i,
+        [ stem == '#' ? nil : stem,
+          rule_id.to_i, accent_id.to_i, session_id.to_i,
           ancode == '-' ? nil : ancode.mb_chars[0..1].to_s,
           prefix_id == '-' ? nil : prefix_id.to_i ]
       end
