@@ -79,7 +79,7 @@ class Myasorubka::AOT # :nodoc:
             prefix = prefix.mb_chars.gsub(/Ё/, 'Е').
                                      gsub(/ё/, 'е').to_s if prefix
           end
-          [ suffix, ancode.mb_chars[0..1].to_s, prefix || '' ]
+          [ suffix, ancode.mb_chars[0..1].to_s, prefix ]
         end.delete_if { |x| !x }
       end
     end
