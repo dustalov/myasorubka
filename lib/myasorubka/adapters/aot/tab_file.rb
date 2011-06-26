@@ -17,10 +17,11 @@ class Myasorubka::AOT
   # A MRD file refers to a Tab file, which is language-dependent.
   #
   class TabFile
-    attr_reader :ancodes
+    attr_reader :ancodes, :language
 
-    def initialize(tab_file) # :nodoc:
+    def initialize(tab_file, language = nil) # :nodoc:
       @ancodes = {}
+      @language = language
 
       id = 0
       tab_file.rewind

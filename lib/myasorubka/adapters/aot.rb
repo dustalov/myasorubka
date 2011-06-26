@@ -23,12 +23,12 @@ class Myasorubka::AOT
     @language = configuration[:language]
 
     to_tempfile(configuration[:mrd]).tap do |mrd_file|
-      @mrd = Myasorubka::AOT::MRDFile.new(mrd_file)
+      @mrd = Myasorubka::AOT::MRDFile.new(mrd_file, language)
       mrd_file.close
     end
 
     to_tempfile(configuration[:tab]).tap do |tab_file|
-      @tab = Myasorubka::AOT::TabFile.new(tab_file)
+      @tab = Myasorubka::AOT::TabFile.new(tab_file, language)
       tab_file.close
     end
   end

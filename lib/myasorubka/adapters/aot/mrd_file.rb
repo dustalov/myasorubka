@@ -12,12 +12,14 @@ class Myasorubka::AOT # :nodoc:
   #
   class MRDFile
     attr_reader :lines
+    attr_reader :language
     attr_reader :rules_offset, :accents_offset, :logs_offset,
                 :prefixes_offset, :lemmas_offset
 
-    def initialize(mrd_file) # :nodoc:
+    def initialize(mrd_file, language = nil) # :nodoc:
       mrd_file.rewind
       @lines = mrd_file.read.force_encoding('UTF-8').lines.to_a
+      @language = language
 
       @rules_offset = 0
       @accents_offset = @rules_offset + rules.length + 1
@@ -71,6 +73,12 @@ class Myasorubka::AOT # :nodoc:
         line.split('%').map_with_index do |rule_line|
           next unless rule_line && !rule_line.empty?
           suffix, ancode, prefix = rule_line.split('*')
+          if :russian == language
+            suffix = suffix.mb_chars.gsub(/Ё/, 'Е').
+                                     gsub(/ё/, 'е').to_s if suffix
+            prefix = prefix.mb_chars.gsub(/Ё/, 'Е').
+                                     gsub(/ё/, 'е').to_s if prefix
+          end
           [ suffix, ancode.mb_chars[0..1].to_s, prefix || '' ]
         end.delete_if { |x| !x }
       end
@@ -100,6 +108,10 @@ class Myasorubka::AOT # :nodoc:
       @lemmas ||= Section.new(lines, lemmas_offset) do |line|
         stem, rule_id, accent_id,
           session_id, ancode, prefix_id = line.split
+        if :russian == language
+          stem = stem.mb_chars.gsub(/Ё/, 'Е').
+                               gsub(/ё/, 'е').to_s if stem
+        end
         [ stem == '#' ? nil : stem,
           rule_id.to_i, accent_id.to_i, session_id.to_i,
           ancode == '-' ? nil : ancode.mb_chars[0..1].to_s,
