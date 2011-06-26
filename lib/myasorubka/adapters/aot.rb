@@ -38,10 +38,12 @@ class Myasorubka::AOT
     tab.ancodes.each_with_index do |(ancode, attrs), msd_id|
       pos, grammemes = attrs[:pos], attrs[:grammemes]
       msd = Myasorubka::AOT::MSD.send(language, pos, grammemes)
-      db.msds[msd_id] = Myasorubka::AOT::MSD.include_msd({
-        'pos' => msd.pos.to_s,
-        'ancode' => ancode # it is unnecessary, but let it be
-      }, msd)
+      msd_hash = {
+        'pos' => msd.pos.to_s
+      }
+      msd_hash['ancode'] = ancode if ancode
+
+      db.msds[msd_id] = Myasorubka::AOT::MSD.include_msd(msd_hash, msd)
     end
     logger.info "MSDs: done (#{db.msds.size})"
 
@@ -55,15 +57,18 @@ class Myasorubka::AOT
     rule_id = 0
     mrd.rules.each_with_index do |rules, rule_set_id|
       rules.each do |suffix, ancode, prefix|
-        db.rules[rule_id] = {
+        rule_hash = {
           'msd_id' => tab.ancodes[ancode][:id],
-          'rule_set_id' => rule_set_id,
-          'prefix' => prefix,
-          'suffix' => suffix
+          'rule_set_id' => rule_set_id
         }
+        rule_hash['prefix'] = prefix if prefix
+        rule_hash['suffix'] = suffix if suffix
+
+        db.rules[rule_id] = rule_hash
         rule_id += 1
         if 0 == rule_id % 1_000
-          logger.info "Rules: now (#{rule_id}): #{suffix} => #{ancode}"
+          logger.info "Rules: now (#{rule_id}): " \
+                      "#{prefix}...#{suffix} => #{ancode}"
         end
       end
     end
