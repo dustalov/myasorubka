@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class Myasorubka::AOT
+class Myasorubka::AOT # :nodoc:
   # AOT-to-MSD morphosyntactic descriptors translator.
   #
   module MSD
@@ -137,7 +137,7 @@ class Myasorubka::AOT
     #
     def self.russian(pos_line, grammemes_line)
       grammemes = grammemes_line.split(',').map do |grammeme|
-        grammeme.mb_chars.downcase.to_s
+        UnicodeUtils.downcase(grammeme)
       end
 
       msd = Myaso::MSD.new(Myaso::MSD::Russian)
@@ -152,7 +152,7 @@ class Myasorubka::AOT
         pos_line = 'АББР'
       end
 
-      case pos_line.mb_chars.upcase.to_s
+      case UnicodeUtils.upcase(pos_line)
       when 'С' then begin
         msd[:pos] = :noun
         msd[:type] = if (grammemes & [ 'имя', 'фам', 'отч', 'жарг', 'арх', 'проф', 'опч' ]).empty?
@@ -187,7 +187,7 @@ class Myasorubka::AOT
       when 'МС-ПРЕДК' then begin
         msd[:pos] = :pronoun
         msd[:type] = :possessive if grammemes.include? 'притяж'
-        msd[:case] = :genititive
+        msd[:case] = :genitive
         [ :person, :gender, :number, :animate ].each do |attribute|
           Russian.send(attribute, msd, grammemes)
         end
