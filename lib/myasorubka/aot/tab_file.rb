@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-class Myasorubka::AOT
+class Myasorubka::AOT # :nodoc:
   # Tab file contains all possible full morphological  patterns for the
   # words.
   #
