@@ -5,38 +5,39 @@ require 'rubygems'
 require 'bundler/setup'
 Bundler.require(:default)
 
+require 'unicode_utils/downcase'
+require 'unicode_utils/upcase'
+
 $:.unshift File.expand_path('../lib', __FILE__)
 require 'myasorubka'
 
-configuration = {
-  :path => ENV['path'] || nil
+config = {
+  path: ENV['path'] || nil
 }
 
-desc 'Convert the AOT project dictionaries'
+desc 'Convert the AOT dictionaries'
 task :aot do
-  configuration[:mrd] = ENV['mrd'] or raise ArgumentError,
-    "ENV['mrd'] is not set."
-  configuration[:tab] = ENV['tab'] or raise ArgumentError,
-    "ENV['tab'] is not set."
-  configuration[:language] = ENV['language'] or raise ArgumentError
-  configuration[:language] = configuration[:language].to_sym
-  configuration[:encoding] = ENV['encoding'] || 'CP-1251'
+  config[:mrd] = ENV['mrd'] or
+    raise ArgumentError, "ENV['mrd'] is not set"
 
-  require 'myasorubka/adapters/aot'
-  Myasorubka::Processor.new(configuration.merge(
-    {
-      :adapter => Myasorubka::AOT
-    }
-  )).run!
+  config[:tab] = ENV['tab'] or
+    raise ArgumentError, "ENV['tab'] is not set"
+
+  config[:language] = ENV['language'] && ENV['language'].to_sym or
+    raise ArgumentError, "ENV['language'] is not set"
+
+  config[:encoding] = ENV['encoding'] || 'CP-1251'
+
+  require 'myasorubka/aot'
+  Myasorubka.new(config.merge(adapter: Myasorubka::AOT)).run!
 end
 
 desc 'Cleanup'
 task :clean do
-  [ 'dec', 'lex', 'tct' ].each do |res|
-    Dir.glob("*.#{res}") do |path|
-      rm_f path
-    end
-  end
+  %w(dex lex tct).
+    map { |ext| Dir['*.%s' % ext] }.
+    flatten.
+    each { |path| rm_f path }
 end
 
-task :default => :list
+task :default => :aot
