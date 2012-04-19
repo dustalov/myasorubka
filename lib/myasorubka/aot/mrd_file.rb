@@ -22,10 +22,10 @@ class Myasorubka::AOT # :nodoc:
       @language = language
 
       @rules_offset = 0
-      @accents_offset = @rules_offset + rules.length + 1
-      @logs_offset = @accents_offset + accents.length + 1
-      @prefixes_offset = @logs_offset + logs.length + 1
-      @lemmas_offset = @prefixes_offset + prefixes.length + 1
+      @accents_offset = rules_offset + rules.length + 1
+      @logs_offset = accents_offset + accents.length + 1
+      @prefixes_offset = logs_offset + logs.length + 1
+      @lemmas_offset = prefixes_offset + prefixes.length + 1
     end
 
     # MRD file section handling helper class.
@@ -35,6 +35,8 @@ class Myasorubka::AOT # :nodoc:
     # the section ata separate line.
     #
     class Section
+      include Enumerable
+
       attr_reader :lines, :offset, :length, :parser
 
       def initialize(lines, offset, &parser_block) # :nodoc:
@@ -72,14 +74,18 @@ class Myasorubka::AOT # :nodoc:
       @rules ||= Section.new(lines, rules_offset) do |line|
         line.split('%').map_with_index do |rule_line|
           next unless rule_line && !rule_line.empty?
-          suffix, ancode, prefix = rule_line.split('*')
+
+          suffix, ancode, prefix = rule_line.split '*'
+
           if :russian == language
-            suffix = suffix.mb_chars.gsub(/Ё/, 'Е').
-                                     gsub(/ё/, 'е').to_s if suffix
-            prefix = prefix.mb_chars.gsub(/Ё/, 'Е').
-                                     gsub(/ё/, 'е').to_s if prefix
+            suffix = suffix && suffix.gsub(/Ё/, 'Е').
+                                      gsub(/ё/, 'е')
+
+            prefix = prefix && prefix.gsub(/Ё/, 'Е').
+                                      gsub(/ё/, 'е')
           end
-          [ suffix, ancode.mb_chars[0..1].to_s, prefix ]
+
+          [suffix, ancode[0..1], prefix]
         end.delete_if { |x| !x }
       end
     end
@@ -109,12 +115,15 @@ class Myasorubka::AOT # :nodoc:
         stem, rule_id, accent_id,
           session_id, ancode, prefix_id = line.split
         if :russian == language
-          stem = stem.mb_chars.gsub(/Ё/, 'Е').
-                               gsub(/ё/, 'е').to_s if stem
+          stem = stem && stem.gsub(/Ё/, 'Е').
+                              gsub(/ё/, 'е')
         end
+
         [ stem == '#' ? nil : stem,
-          rule_id.to_i, accent_id.to_i, session_id.to_i,
-          ancode == '-' ? nil : ancode.mb_chars[0..1].to_s,
+          rule_id.to_i,
+          accent_id.to_i,
+          session_id.to_i,
+          ancode == '-' ? nil : ancode[0..1],
           prefix_id == '-' ? nil : prefix_id.to_i ]
       end
     end
