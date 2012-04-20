@@ -39,11 +39,10 @@ class Myasorubka::AOT # :nodoc:
 
       attr_reader :lines, :offset, :length, :parser
 
-      def initialize(lines, offset, &parser_block) # :nodoc:
-        @lines = lines
-        @offset = offset
+      def initialize(lines, offset, &block) # :nodoc:
+        @lines, @offset = lines, offset
         @length = lines[offset].strip.to_i
-        @parser = parser_block
+        @parser = block
       end
 
       def [] id # :nodoc:
@@ -58,12 +57,6 @@ class Myasorubka::AOT # :nodoc:
       def each &block # :nodoc:
         length.times do |id|
           block.call self[id]
-        end
-      end
-
-      def each_with_index &block # :nodoc:
-        length.times do |id|
-          block.call self[id], id
         end
       end
     end
