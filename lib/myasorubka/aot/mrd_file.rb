@@ -31,7 +31,7 @@ class Myasorubka::AOT # :nodoc:
     # MRD file section handling helper class.
     #
     # Each section is a set of records, one per line. The number of
-    # all records of the section  is written in the very beginning of
+    # all records of the section is written in the very beginning of
     # the section ata separate line.
     #
     class Section
