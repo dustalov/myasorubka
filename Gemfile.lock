@@ -1,9 +1,9 @@
 GIT
   remote: git://github.com/eveel/myaso.git
-  revision: 988dd48c956b582971cdae76dc3c99484b8ec2d1
+  revision: 18219efbd364cc5dc78aef34865669d9cec19f1d
   branch: develop
   specs:
-    myaso (0.3.0.rc1)
+    myaso (0.3.0.rc2)
       unicode_utils (~> 1.3)
 
 GEM
