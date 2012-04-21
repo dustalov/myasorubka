@@ -70,12 +70,12 @@ class Myasorubka::AOT # :nodoc:
 
           suffix, ancode, prefix = rule_line.split '*'
 
-          if :russian == language
-            suffix = suffix && suffix.gsub(/Ё/, 'Е').
-                                      gsub(/ё/, 'е')
-
-            prefix = prefix && prefix.gsub(/Ё/, 'Е').
-                                      gsub(/ё/, 'е')
+          case language
+          when :russian then
+            begin
+              suffix &&= UnicodeUtils.downcase(suffix).gsub('ё', 'е')
+              prefix &&= UnicodeUtils.downcase(prefix).gsub('ё', 'е')
+            end
           end
 
           [suffix, ancode[0..1], prefix]
@@ -107,9 +107,12 @@ class Myasorubka::AOT # :nodoc:
       @lemmas ||= Section.new(lines, lemmas_offset) do |line|
         stem, rule_id, accent_id,
           session_id, ancode, prefix_id = line.split
-        if :russian == language
-          stem = stem && stem.gsub(/Ё/, 'Е').
-                              gsub(/ё/, 'е')
+
+        case language
+        when :russian then
+          begin
+            stem &&= UnicodeUtils.downcase(stem).gsub('ё', 'е')
+          end
         end
 
         [ stem == '#' ? nil : stem,
