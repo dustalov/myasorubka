@@ -76,9 +76,10 @@ class Myasorubka::AOT
       stem, rule_set_id, accent_id, session_id, ancode, prefix_id = lemma
 
       stem_hash = {
-        'rule_set_id' => rule_set_id,
-        'stem' => stem
+        'rule_set_id' => rule_set_id
       }
+
+      stem_hash['stem'] = stem if stem && !stem.empty?
 
       if ancode_grammemes = tab.ancodes[ancode]
         pos, grammemes = ancode_grammemes.values_at(:pos, :grammemes)
