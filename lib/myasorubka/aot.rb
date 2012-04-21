@@ -18,8 +18,7 @@ class Myasorubka::AOT
   attr_reader :mrd, :tab, :language, :encoding
 
   def initialize(config = {}) # :nodoc:
-    @encoding = config[:encoding]
-    @language = config[:language]
+    @encoding, @language = config.values_at(:encoding, :language)
 
     to_tempfile(config[:mrd]).tap do |mrd_file|
       @mrd = Myasorubka::AOT::MRDFile.new(mrd_file, language)
