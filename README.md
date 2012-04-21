@@ -4,6 +4,12 @@ Myasorubka
 Myasorubka is a morphological dictionaries processor for the
 [Myaso](https://github.com/eveel/myaso) Analyzer.
 
+## Usage
+
+To convert AOT dictionaries into the Myaso format, all you need is
+to copy the correspondent `morphs.msd` and `rgramtab.tab` files
+to this directory and run `./aot-russian`.
+
 ## Contributing
 
 1. Fork it;
