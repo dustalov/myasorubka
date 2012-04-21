@@ -314,6 +314,7 @@ class Myasorubka::AOT # :nodoc:
         end
       end
       when '*' then begin
+        msd[:pos] = :crutch
         [ :gender, :animate, :number, :case, :case2, :aspect,
           :voice, :tense, :person, :definiteness,
           :degree ].each do |attribute|
