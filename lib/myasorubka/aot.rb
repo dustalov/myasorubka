@@ -41,6 +41,7 @@ class Myasorubka::AOT
 
     # rules -> rules
     rule_id = 0
+
     mrd.rules.each_with_index do |rules, rule_set_id|
       rules.each do |suffix, ancode, prefix|
         pos, grammemes = tab.ancodes[ancode].values_at(:pos, :grammemes)
@@ -50,8 +51,8 @@ class Myasorubka::AOT
           'rule_set_id' => rule_set_id
         }
 
-        rule_hash.merge! 'prefix' => prefix if prefix
-        rule_hash.merge! 'suffix' => suffix if suffix
+        rule_hash.merge! 'prefix' => prefix if prefix && !prefix.empty?
+        rule_hash.merge! 'suffix' => suffix if suffix && !suffix.empty?
 
         db.rules.set(rule_id, rule_hash)
 
