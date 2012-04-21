@@ -43,15 +43,20 @@ class Myasorubka::AOT
 
     mrd.rules.each_with_index do |rules, rule_set_id|
       rules.each do |suffix, ancode, prefix|
-        pos, grammemes = tab.ancodes[ancode].values_at(:pos, :grammemes)
 
         rule_hash = {
-          'msd' => MSD.send(language, pos, grammemes).to_s,
           'rule_set_id' => rule_set_id
         }
 
-        rule_hash.merge! 'prefix' => prefix if prefix && !prefix.empty?
-        rule_hash.merge! 'suffix' => suffix if suffix && !suffix.empty?
+        if ancode_grammemes = tab.ancodes[ancode]
+          pos, grammemes = ancode_grammemes.values_at(:pos, :grammemes)
+          msd = MSD.send(language, pos, grammemes).to_s
+
+          rule_hash['msd'] = msd unless msd.empty?
+        end
+
+        rule_hash['prefix'] = prefix if prefix && !prefix.empty?
+        rule_hash['suffix'] = suffix if suffix && !suffix.empty?
 
         db.rules.set(rule_id, rule_hash)
 
@@ -75,8 +80,11 @@ class Myasorubka::AOT
         'stem' => stem
       }
 
-      if ancode_hash = tab.ancodes[ancode]
-        stem_hash['msd_id'] = ancode_hash[:id]
+      if ancode_grammemes = tab.ancodes[ancode]
+        pos, grammemes = ancode_grammemes.values_at(:pos, :grammemes)
+        msd = MSD.send(language, pos, grammemes).to_s
+
+        stem_hash['msd'] = msd unless msd.empty? || msd == '*'
       end
 
       db.stems.set(stem_id, stem_hash)
