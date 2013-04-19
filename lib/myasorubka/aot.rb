@@ -2,7 +2,7 @@
 
 # http://aot.ru/
 module Myasorubka::AOT
-  require 'myasorubka/aot/mrd_file'
-  require 'myasorubka/aot/tab_file'
-  require 'myasorubka/aot/msd'
+  require 'myasorubka/aot/dictionary'
+  require 'myasorubka/aot/gramtab'
+  require 'myasorubka/aot/tags'
 end

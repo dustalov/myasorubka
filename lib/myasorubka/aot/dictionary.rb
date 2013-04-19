@@ -8,7 +8,7 @@
 # accentual models, section of user sessions, session of prefix sets,
 # section of lemmas.
 #
-class Myasorubka::AOT::MRDFile
+class Myasorubka::AOT::Dictionary
   attr_reader :lines, :language
   attr_reader :rules_offset, :accents_offset, :logs_offset,
               :prefixes_offset, :lemmas_offset

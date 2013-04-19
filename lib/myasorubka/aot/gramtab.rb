@@ -15,7 +15,7 @@
 #
 # A MRD file refers to a Tab file, which is language-dependent.
 #
-class Myasorubka::AOT::TabFile
+class Myasorubka::AOT::Gramtab
   attr_reader :ancodes, :language
 
   # :nodoc:

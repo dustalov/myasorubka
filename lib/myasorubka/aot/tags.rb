@@ -2,7 +2,7 @@
 
 # AOT-to-MSD morphosyntactic descriptors translator.
 #
-class Myasorubka::AOT::MSD
+class Myasorubka::AOT::Tags
   def self.join(hash, msd)
     msd.grammemes.inject(hash) { |h, (k, v)| h[k.to_s] = v.to_s; h }
   end
