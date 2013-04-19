@@ -2,7 +2,7 @@ Myasorubka
 ==========
 
 Myasorubka is a morphological dictionaries processor for the
-[Myaso](https://github.com/eveel/myaso) Analyzer.
+[Myaso](https://github.com/ustalov/myaso) analyzer.
 
 ## Usage
 
@@ -18,8 +18,10 @@ to this directory and run `./aot-russian`.
 4. Push to the branch (`git push origin my-new-feature`);
 5. Create new Pull Request.
 
+## Dependency Status [<img src="https://gemnasium.com/ustalov/myasorubka.png"/>](https://gemnasium.com/ustalov/myasorubka)
+
 ## Copyright
 
-Copyright (c) 2010-2012 [Dmitry A. Ustalov]. See LICENSE for details.
+Copyright (c) 2010-2013 [Dmitry Ustalov]. See LICENSE for details.
 
-[Dmitry A. Ustalov]: http://eveel.ru
+[Dmitry Ustalov]: http://eveel.ru
