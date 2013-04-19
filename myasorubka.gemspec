@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['dmitry@eveel.ru']
   spec.description   = 'Myasorubka is a morphological data processor.'
   spec.summary       = 'Myasorubka is a morphological data proceesor ' \
-                       'that completely supports AOT notation.'
+                       'that supports AOT and MULTEXT-East notations.'
   spec.homepage      = 'https://github.com/ustalov/myasorubka'
   spec.license       = 'MIT'
 
