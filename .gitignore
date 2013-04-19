@@ -23,18 +23,23 @@ nbproject
 .redcar
 
 ## RVM
+.rvmrc
 .ruby-version
 .ruby-gemset
+
+## RUBINIUS
+.rbx
 
 ## BUNDLER
 .bundle
 Gemfile.lock
 
+## YARD
+.yardoc
+doc
+
 ## PROJECT::GENERAL
+coverage
+pkg
 
 ## PROJECT::SPECIFIC
-*.tct
-*.dec
-*.lex
-*.tsv
-*.tar.xz
