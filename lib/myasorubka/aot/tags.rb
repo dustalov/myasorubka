@@ -136,7 +136,7 @@ class Myasorubka::AOT::Tags
       UnicodeUtils.downcase(grammeme)
     end
 
-    msd = Myaso::MSD.new(Myaso::MSD::Russian)
+    msd = Myasorubka::MSD.new(Myasorubka::MSD::Russian)
 
     if grammemes.include? 'aббр'
       msd[:pos] = :abbreviation
