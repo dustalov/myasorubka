@@ -1,126 +1,124 @@
 # encoding: utf-8
 
-class Myasorubka::AOT # :nodoc:
-  # MRD file is a text file which contains one morphological
-  # dictionary for one natural language. MRD is an abbreviation
-  # of "morphological dictionary".
+# MRD file is a text file that contains a morphological dictionary of
+# a natural language. MRD is an abbreviation of "morphological dictionary".
+#
+# All words in MRD file are written in UPPERCASE. One MRD file has the
+# following sections: section of flexion and prefix models, section of
+# accentual models, section of user sessions, session of prefix sets,
+# section of lemmas.
+#
+class Myasorubka::AOT::MRDFile
+  attr_reader :lines, :language
+  attr_reader :rules_offset, :accents_offset, :logs_offset,
+              :prefixes_offset, :lemmas_offset
+
+  # The parser should be initialized by passing filename and language
+  # parameters.
   #
-  # All words in MRD file are written in UPPERCASE. One MRD file
-  # consists of the following sections: section of flexion and
-  # prefix models, section of accentual models, section of user
-  # sessions, session of prefix sets, section of lemmas.
+  def initialize(filename, language = nil, ee = nil, ie = Encoding.default_external)
+    encoding = { internal_encoding: ie, external_encoding: ee }
+    @lines, @language = File.readlines(filename, $/, encoding), language
+
+    @rules_offset = 0
+    @accents_offset = rules_offset + rules.length + 1
+    @logs_offset = accents_offset + accents.length + 1
+    @prefixes_offset = logs_offset + logs.length + 1
+    @lemmas_offset = prefixes_offset + prefixes.length + 1
+  end
+
+  # MRD file section handling helper class.
   #
-  class MRDFile
-    attr_reader :lines
-    attr_reader :language
-    attr_reader :rules_offset, :accents_offset, :logs_offset,
-                :prefixes_offset, :lemmas_offset
+  # Each section is a set of records, one per line. The number of
+  # all records of the section is written in the very beginning of
+  # the section ata separate line.
+  #
+  class Section
+    include Enumerable
 
-    def initialize(mrd_file, language = nil) # :nodoc:
-      mrd_file.rewind
-      @lines = mrd_file.read.force_encoding('UTF-8').lines.to_a
-      @language = language
+    attr_reader :lines, :offset, :length, :parser
 
-      @rules_offset = 0
-      @accents_offset = rules_offset + rules.length + 1
-      @logs_offset = accents_offset + accents.length + 1
-      @prefixes_offset = logs_offset + logs.length + 1
-      @lemmas_offset = prefixes_offset + prefixes.length + 1
+    # :nodoc:
+    def initialize(lines, offset, &block)
+      @lines, @offset = lines, offset
+      @length = lines[offset].strip.to_i
+      @parser = block || proc { |s| s }
     end
 
-    # MRD file section handling helper class.
-    #
-    # Each section is a set of records, one per line. The number of
-    # all records of the section is written in the very beginning of
-    # the section ata separate line.
-    #
-    class Section
-      include Enumerable
-
-      attr_reader :lines, :offset, :length, :parser
-
-      def initialize(lines, offset, &block) # :nodoc:
-        @lines, @offset = lines, offset
-        @length = lines[offset].strip.to_i
-        @parser = block
+    # :nodoc:
+    def [] id
+      if id < 0 or id >= length
+        raise ArgumentError,
+          'invalid id=%d when offset=%d and length=%d' %
+          [id, offset, length]
       end
 
-      def [] id # :nodoc:
-        if id < 0 || id >= length
-          raise ArgumentError, "invalid id=#{id} when " \
-                               "offset=#{offset} and "\
-                               "length=#{length}"
-        end
-        parser.call(lines[offset + 1 + id].strip)
-      end
-
-      def each &block # :nodoc:
-        length.times do |id|
-          block.call self[id]
-        end
-      end
+      parser.call(lines[offset + 1 + id].strip)
     end
 
-    # Rules section accessor.
-    #
-    def rules
-      @rules ||= Section.new(lines, rules_offset) do |line|
-        line.split('%').map_with_index do |rule_line|
-          next unless rule_line && !rule_line.empty?
-
-          suffix, ancode, prefix = rule_line.split '*'
-
-          case language
-          when :russian then
-            begin
-              suffix &&= UnicodeUtils.downcase(suffix).gsub('ё', 'е')
-              prefix &&= UnicodeUtils.downcase(prefix).gsub('ё', 'е')
-            end
-          end
-
-          [suffix, ancode[0..1], prefix]
-        end.delete_if { |x| !x }
-      end
+    # :nodoc:
+    def each(&block)
+      length.times { |id| block.call self[id] }
     end
+  end
 
-    # Accents section accessor.
-    #
-    def accents
-      @accents ||= Section.new(lines, accents_offset) { |line| line }
-    end
+  # Rules section accessor.
+  #
+  def rules
+    @rules ||= Section.new(lines, rules_offset) do |line|
+      line.split('%').map do |rule_line|
+        next unless rule_line && !rule_line.empty?
 
-    # Logs section accessor.
-    #
-    def logs
-      @logs ||= Section.new(lines, logs_offset) { |line| line }
-    end
-
-    # Prefixes section accessor.
-    #
-    def prefixes
-      @prefixes ||= Section.new(lines, prefixes_offset) { |line| line }
-    end
-
-    # Lemmas section accessor.
-    #
-    def lemmas
-      @lemmas ||= Section.new(lines, lemmas_offset) do |line|
-        stem, rule_id, accent_id,
-          session_id, ancode, prefix_id = line.split
+        suffix, ancode, prefix = rule_line.split '*'
 
         case language
         when :russian then
-          begin
-            stem &&= UnicodeUtils.downcase(stem).gsub('ё', 'е')
-          end
+          suffix &&= suffix.tr 'Ёё', 'Ее'
+          prefix &&= prefix.tr 'Ёё', 'Ее'
         end
 
-        [ stem == '#' ? nil : stem,
-          rule_id.to_i,
-          accent_id.to_i,
-          session_id.to_i,
-          ancode == '-' ? nil : ancode[0..1],
-          prefix_id == '-' ? nil : prefix_id.to_i ]
+        [suffix, ancode[0..1], prefix]
+      end.compact
+    end
+  end
+
+  # Accents section accessor.
+  #
+  def accents
+    @accents ||= Section.new(lines, accents_offset)
+  end
+
+  # Logs section accessor.
+  #
+  def logs
+    @logs ||= Section.new(lines, logs_offset)
+  end
+
+  # Prefixes section accessor.
+  #
+  def prefixes
+    @prefixes ||= Section.new(lines, prefixes_offset)
+  end
+
+  # Lemmas section accessor.
+  #
+  def lemmas
+    @lemmas ||= Section.new(lines, lemmas_offset) do |line|
+      stem, rule_id, accent_id, session_id, ancode, prefix_id = line.split
+
+      case language
+      when :russian then
+        stem &&= stem.tr 'Ёё', 'Ее'
+      end
+
+      Array.new.tap do |result|
+        result <<
+          (stem == '#' ? nil : stem) <<
+          rule_id.to_i <<
+          accent_id.to_i <<
+          session_id.to_i <<
+          (ancode == '-' ? nil : ancode[0..1]) <<
+          (prefix_id == '-' ? nil : prefix_id.to_i)
       end
     end
   end

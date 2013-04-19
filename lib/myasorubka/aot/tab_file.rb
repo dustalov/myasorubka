@@ -1,45 +1,32 @@
 # encoding: utf-8
 
-class Myasorubka::AOT # :nodoc:
-  # Tab file contains all possible full morphological  patterns for the
-  # words.
-  #
-  # One line in a Tab file looks like as follows:
-  #
-  #   <ancode> <unused_number> <part_of_speech> <grammems>
-  #
-  # An ancode is an ID, which consists of two letters and which
-  # uniquely identifies a morphological pattern. A morphological pattern
-  # consists of:
-  #
-  #   <part_of_speech> and <grammemes>
-  #
-  # A MRD file refers to a Tab file, which is language-dependent.
-  #
-  class TabFile
-    attr_reader :ancodes, :language
+# Tab file contains all possible full morphological  patterns for the
+# words.
+#
+# One line in a Tab file looks like as follows:
+#
+#   <ancode> <useless_number> <pos> <grammemes>
+#
+# An ancode is an ID, which consists of two letters and which
+# uniquely identifies a morphological pattern. A morphological pattern
+# consists of:
+#
+#   <pos> and <grammemes>
+#
+# A MRD file refers to a Tab file, which is language-dependent.
+#
+class Myasorubka::AOT::TabFile
+  attr_reader :ancodes, :language
 
-    def initialize(tab_file, language = nil) # :nodoc:
-      @ancodes = {}
-      @language = language
+  # :nodoc:
+  def initialize(filename, ee = nil, ie = Encoding.default_external)
+    @ancodes, @language, id = {}, language, -1
+    encoding = { internal_encoding: ie, external_encoding: ee }
 
-      id = 0
-      tab_file.rewind
-      tab_file.each do |line|
-        line.force_encoding('UTF-8').strip!
-        next if line.empty? || line.start_with?('//')
-        ancode, unused_number, pos, grammemes = line.split
-
-        ancodes[ancode] = {
-          :id => id, :pos => pos,
-          :grammemes => grammemes || ''
-        }
-        id += 1
-      end
-    end
-
-    def find_by_id id # :nodoc:
-      ancodes.find { |k, v| v[:id] == id }
+    File.readlines(filename, $/, encoding).each do |line, i|
+      next if line.empty? or line.start_with?('//')
+      ancode, _, pos, grammemes = line.split
+      ancodes[ancode] = { id: id += 1, pos: pos, grammemes: grammemes || '' }
     end
   end
 end
