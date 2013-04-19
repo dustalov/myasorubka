@@ -1,14 +1,9 @@
 Myasorubka
 ==========
 
-Myasorubka is a morphological dictionaries processor for the
-[Myaso](https://github.com/ustalov/myaso) analyzer.
-
-## Usage
-
-To convert AOT dictionaries into the Myaso format, all you need is
-to copy the correspondent `morphs.msd` and `rgramtab.tab` files
-to this directory and run `./aot-russian`.
+Myasorubka is a morphological data processor that supports
+[AOT](http://aot.ru) and [MULTEXT-East](http://nl.ijs.si/ME/)
+notations.
 
 ## Contributing
 
@@ -18,10 +13,11 @@ to this directory and run `./aot-russian`.
 4. Push to the branch (`git push origin my-new-feature`);
 5. Create new Pull Request.
 
+## Build Status [<img src="https://secure.travis-ci.org/ustalov/myasorubka.png"/>](http://travis-ci.org/ustalov/myasorubka)
+
 ## Dependency Status [<img src="https://gemnasium.com/ustalov/myasorubka.png"/>](https://gemnasium.com/ustalov/myasorubka)
 
 ## Copyright
-
-Copyright (c) 2010-2013 [Dmitry Ustalov]. See LICENSE for details.
+Copyright (c) 2011-2013 [Dmitry Ustalov]. See LICENSE for details.
 
 [Dmitry Ustalov]: http://eveel.ru
