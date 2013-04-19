@@ -3,7 +3,5 @@
 source 'http://rubygems.org'
 
 gem 'rake'
-
 gem 'tokyocabinet'
-gem 'myaso', git: 'git://github.com/eveel/myaso.git',
-  branch: 'develop'
+gem 'myaso', github: 'ustalov/myaso'
