@@ -23,7 +23,8 @@ nbproject
 .redcar
 
 ## RVM
-.rvmrc
+.ruby-version
+.ruby-gemset
 
 ## BUNDLER
 .bundle
