@@ -5,19 +5,24 @@ require 'csv'
 
 class Myasorubka::MSD
   describe Russian do
-    before do
-      table_filename = File.expand_path('../russian.tsv', __FILE__)
-      @tsv = CSV.open(table_filename, 'rb', :col_sep => "\t")
-      @header = @tsv.shift
-    end
-
-    after do
-      @tsv.close
-    end
+    let(:tsv_filename) { File.expand_path('../russian.tsv', __FILE__) }
+    subject { CSV.open(tsv_filename, 'rb', col_sep: "\t", headers: true) }
+    after { subject.close }
 
     it 'should be parsed' do
-      until @tsv.eof?
-        Myasorubka::MSD.new(Russian, @tsv.shift.first[0]).must_be :valid?
+      subject.each do |row|
+        sample, pos = row.delete('MSD').last, row.delete('CATEGORY').last
+        sample.gsub! /-+$/, ''
+
+        category = Russian.const_get(pos.upcase)
+        msd = Myasorubka::MSD.new(Russian)
+        msd[:pos] = pos.downcase.to_sym
+
+        row.reject { |_, v| ['-', nil].include? v }.each do |k, v|
+          msd[k.downcase.tr('-', '_').to_sym] = v.downcase.tr('-', '_').to_sym
+        end
+
+        msd.to_s.must_equal sample
       end
     end
   end

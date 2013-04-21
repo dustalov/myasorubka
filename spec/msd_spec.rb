@@ -83,9 +83,8 @@ module Myasorubka
     describe 'Generator' do
       before { @msd = MSD.new(MSD::Russian) }
 
-      it 'should not generate anything without POS tag' do
-        @msd[:number] = :singular
-        @msd.to_s.must_equal ''
+      it 'should raise InvalidDescriptor when POS tag is not set' do
+        lambda { @msd[:number] = :singular }.must_raise MSD::InvalidDescriptor
       end
 
       it 'should raise InvalidDescriptor when POS tag is invalid' do

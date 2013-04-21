@@ -90,6 +90,7 @@ class Myasorubka::MSD
   #
   def []= key, value
     return @pos = value if :pos == key
+    raise InvalidDescriptor, 'category is not set yet' unless pos
     grammemes[key] = value
   end
 
@@ -159,16 +160,15 @@ class Myasorubka::MSD
 
       attr_index = attrs.index { |name, *values| name == attr_name }
       unless attr_index
-        raise InvalidDescriptor, "no such attribute: '#{attr_name}' " \
-                                 "of category '#{pos}'"
+        raise InvalidDescriptor, 'no such attribute "%s" of category "%s"' %
+          [attr_name, pos]
       end
 
       attr_name, values = attrs[attr_index]
 
       unless attr_value = values[value]
-        raise InvalidDescriptor, "no such value: '#{value}'' " \
-                                 "for attribute '#{attr_name}' " \
-                                 "of category '#{pos}'"
+        raise InvalidDescriptor, 'no such attribute "%s" ' \
+          'for attribute "%s" of category "%s"' % [value, attr_name, pos]
       end
 
       msd[attr_index + 1] = attr_value
