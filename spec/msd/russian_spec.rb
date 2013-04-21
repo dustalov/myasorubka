@@ -5,8 +5,8 @@ require 'csv'
 
 class Myasorubka::MSD
   describe Russian do
-    let(:tsv_filename) { File.expand_path('../russian.tsv', __FILE__) }
-    subject { CSV.open(tsv_filename, 'rb', col_sep: "\t", headers: true) }
+    let(:filename) { File.expand_path('../../data/russian.tsv', __FILE__) }
+    subject { CSV.open(filename, 'rb', col_sep: "\t", headers: true) }
     after { subject.close }
 
     it 'should be parsed' do
