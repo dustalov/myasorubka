@@ -18,6 +18,7 @@ It is possible to parse MSDs using the `Myasorubka::MSD` class.
 ```ruby
 >> require 'myasorubka/msd/russian'
 => true
+>> msd = Myasorubka::MSD.new(Myasorubka::MSD::Russian, 'Ncnpdy')
 => #<Myasorubka::MSD::Russian msd="Ncnpdy">
 >> msd.pos
 => :noun
