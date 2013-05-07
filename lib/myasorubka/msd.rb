@@ -47,7 +47,8 @@ class Myasorubka::MSD
   #
   class InvalidDescriptor < RuntimeError; end
 
-  attr_reader :pos, :grammemes, :language
+  attr_reader :grammemes, :language
+  attr_accessor :pos
 
   # Creates a new morphosyntactic descriptor model instance.
   # Please specify a `language` module with defined

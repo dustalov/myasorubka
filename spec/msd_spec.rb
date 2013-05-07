@@ -50,6 +50,11 @@ module Myasorubka
         subject.pos.must_equal subject[:pos]
       end
 
+      it 'should have writer for POS' do
+        subject.pos = :residual
+        subject.pos.must_equal subject[:pos]
+      end
+
       it 'can merge attributes hash into itself' do
         attrs = { :pos => :conjunction, :type => :coordinating,
                   :formation => :simple }
