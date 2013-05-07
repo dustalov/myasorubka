@@ -9,7 +9,7 @@
 # section of lemmas.
 #
 class Myasorubka::AOT::Dictionary
-  attr_reader :lines, :language
+  attr_reader :filename, :lines, :language
   attr_reader :rules_offset, :accents_offset, :logs_offset,
               :prefixes_offset, :lemmas_offset
 
@@ -18,6 +18,7 @@ class Myasorubka::AOT::Dictionary
   #
   def initialize(filename, language = nil, ee = nil, ie = Encoding.default_external)
     encoding = { internal_encoding: ie, external_encoding: ee }
+    @filename = filename
     @lines, @language = File.readlines(filename, $/, encoding), language
 
     @rules_offset = 0
@@ -59,6 +60,11 @@ class Myasorubka::AOT::Dictionary
     # :nodoc:
     def each(&block)
       length.times { |id| block.call self[id] }
+    end
+
+    # :nodoc:
+    def inspect
+      '#<%s offset=%d length=%d>' % [self.class.name, offset, length]
     end
   end
 
@@ -121,5 +127,11 @@ class Myasorubka::AOT::Dictionary
           (prefix_id == '-' ? nil : prefix_id.to_i)
       end
     end
+  end
+
+  # :nodoc:
+  def inspect
+    sprintf('#<%s filename=%s language=%s>',
+      self.class.name, filename.inspect, language.inspect)
   end
 end

@@ -16,11 +16,11 @@
 # A MRD file refers to a Tab file, which is language-dependent.
 #
 class Myasorubka::AOT::Gramtab
-  attr_reader :ancodes, :language
+  attr_reader :filename, :ancodes, :language
 
   # :nodoc:
   def initialize(filename, ee = nil, ie = Encoding.default_external)
-    @ancodes, @language, id = {}, language, -1
+    @filename, @ancodes, @language, id = filename, {}, language, -1
     encoding = { internal_encoding: ie, external_encoding: ee }
 
     File.readlines(filename, $/, encoding).each do |line, i|
@@ -28,5 +28,11 @@ class Myasorubka::AOT::Gramtab
       ancode, _, pos, grammemes = line.split
       ancodes[ancode] = { id: id += 1, pos: pos, grammemes: grammemes || '' }
     end
+  end
+
+  # :nodoc:
+  def inspect
+    sprintf('#<%s filename=%s language=%s>',
+      self.class.name, filename.inspect, language.inspect)
   end
 end
