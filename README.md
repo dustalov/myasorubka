@@ -51,7 +51,7 @@ Also, the `Myasorubka::MSD` class allows to write MSDs.
 ```
 
 ## AOT dictionaries
-Myasorubka provides a simple parsers for lexicon in the [AOT](http://aot.ru)
+Myasorubka provides simple parsers for lexicon in the [AOT](http://aot.ru)
 format, both for gramtab and dictionary files.
 
 ```ruby
