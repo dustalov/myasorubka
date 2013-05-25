@@ -4,11 +4,9 @@ require 'rubygems'
 
 $:.unshift File.expand_path('../../lib', __FILE__)
 
-if RUBY_VERSION == '1.8'
-  gem 'minitest'
-end
-
+gem 'minitest'
 require 'minitest/autorun'
+require 'minitest/hell'
 
 require 'myasorubka'
 require 'myasorubka/aot'
