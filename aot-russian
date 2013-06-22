@@ -1,7 +1,0 @@
-#!/bin/sh
-rake clean aot \
-  mrd=morphs.mrd \
-  tab=rgramtab.tab \
-  encoding=CP1251 \
-  language=russian \
-  --trace
