@@ -104,11 +104,11 @@ You can learn more about AOT lexicon from the
 4. Push to the branch (`git push origin my-new-feature`);
 5. Create new Pull Request.
 
-## Build Status [<img src="https://secure.travis-ci.org/ustalov/myasorubka.png"/>](http://travis-ci.org/ustalov/myasorubka)
+## Build Status [<img src="https://secure.travis-ci.org/dustalov/myasorubka.png"/>](http://travis-ci.org/dustalov/myasorubka)
 
-## Dependency Status [<img src="https://gemnasium.com/ustalov/myasorubka.png"/>](https://gemnasium.com/ustalov/myasorubka)
+## Dependency Status [<img src="https://gemnasium.com/dustalov/myasorubka.png"/>](https://gemnasium.com/dustalov/myasorubka)
 
 ## Copyright
-Copyright (c) 2011-2013 [Dmitry Ustalov]. See LICENSE for details.
+Copyright (c) 2011-2015 [Dmitry Ustalov]. See LICENSE for details.
 
-[Dmitry Ustalov]: http://eveel.ru
+[Dmitry Ustalov]: https://ustalov.name/
