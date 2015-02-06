@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = 'Myasorubka is a morphological data processor.'
   spec.summary       = 'Myasorubka is a morphological data proceesor ' \
                        'that supports AOT and MULTEXT-East notations.'
-  spec.homepage      = 'https://github.com/ustalov/myasorubka'
+  spec.homepage      = 'https://github.com/dustalov/myasorubka'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
