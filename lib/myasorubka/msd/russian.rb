@@ -11,9 +11,6 @@
 #
 # http://nl.ijs.si/ME/V4/msd/html/msd-ru.html
 #
-# This specification was translated into the Ruby language
-# by [Dmitry Ustalov](http://eveel.ru).
-#
 module Myasorubka::MSD::Russian
   # Russian Noun.
   #

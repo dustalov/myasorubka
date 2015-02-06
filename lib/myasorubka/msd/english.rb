@@ -5,9 +5,6 @@
 #
 # http://nl.ijs.si/ME/V4/msd/html/msd-en.html
 #
-# This specification was translated into the Ruby language
-# by [Dmitry Ustalov](http://eveel.ru).
-#
 module Myasorubka::MSD::English
   # English Noun.
   #
