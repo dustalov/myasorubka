@@ -153,26 +153,23 @@ class Myasorubka::MSD
       raise InvalidDescriptor, "category is nil"
     end
 
+    attributes = category[:attrs]
     msd = [category[:code]]
 
-    attrs = category[:attrs]
-    grammemes.each do |attr_name, value|
+    grammemes.each do |attribute, value|
       next unless value
 
-      attr_index = attrs.index { |name, *values| name == attr_name }
-      unless attr_index
-        raise InvalidDescriptor, 'no such attribute "%s" of category "%s"' %
-          [attr_name, pos]
+      unless index = attributes.index { |name, _| name == attribute }
+        raise InvalidDescriptor, 'no such attribute "%s" of category "%s"' % [attribute, pos]
       end
 
-      attr_name, values = attrs[attr_index]
+      _, values = attributes[index]
 
-      unless attr_value = values[value]
-        raise InvalidDescriptor, 'no such attribute "%s" ' \
-          'for attribute "%s" of category "%s"' % [value, attr_name, pos]
+      unless attribute_value = values[value]
+        raise InvalidDescriptor, 'no such value "%s" for attribute "%s" of category "%s"' % [value, attribute, pos]
       end
 
-      msd[attr_index + 1] = attr_value
+      msd[index + 1] = attribute_value
     end
 
     msd.map { |e| e || EMPTY_DESCRIPTOR }.join
