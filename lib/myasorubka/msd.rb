@@ -188,6 +188,30 @@ class Myasorubka::MSD
     false
   end
 
+  # Drop every attribute that does not appear in the category.
+  #
+  # @return [MSD] self.
+  #
+  def prune!
+    unless category = language::CATEGORIES[pos]
+      grammemes.clean
+      return self
+    end
+
+    attributes = category[:attrs]
+
+    grammemes.reject! do |attribute, value|
+      if index = attributes.index { |name, _| name == attribute }
+        _, values = attributes[index]
+        !values[value]
+      else
+        true
+      end
+    end
+
+    self
+  end
+
   protected
   # @private
   def parse! msd_line
