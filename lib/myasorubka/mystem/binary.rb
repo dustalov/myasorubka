@@ -101,16 +101,16 @@ module Myasorubka::Mystem::Binary extend self
       case GRAMMEMES[code]
       # Nomenus
       when :postposition then msd[:pos] = :adposition
-      when :adjective then msd[:pos] = :adjective
+      when :adjective then msd[:pos] = :adjective; msd[:type] = :qualificative; msd[:degree] = :positive
       when :adverb then msd[:pos] = :adverb
       when :conjunction then msd[:pos] = :conjunction
       when :interjunction then msd[:pos] = :interjection
-      when :numeral then msd[:pos] = :numeral
+      when :numeral then msd[:pos] = :numeral; msd[:type] = :cardinal
       when :particle then msd[:pos] = :particle
-      when :preposition then msd[:pos] = :adposition
+      when :preposition then msd[:pos] = :adposition; msd[:type] = :preposition
       when :substantive then msd[:pos] = :noun; msd[:type] = :common
-      when :verb then msd[:pos] = :verb
-      when :adj_numeral then msd[:pos] = :numeral
+      when :verb then msd[:pos] = :verb; msd[:type] = :main
+      when :adj_numeral then msd[:pos] = :numeral; msd[:type] = :ordinal
       when :adj_pronoun then msd[:pos] = :pronoun; msd[:syntactic_type] = :adjectival
       when :adv_pronoun then msd[:pos] = :pronoun; msd[:syntactic_type] = :adverbial
       when :subst_pronoun then msd[:pos] = :pronoun; msd[:syntactic_type] = :nominal
@@ -132,10 +132,9 @@ module Myasorubka::Mystem::Binary extend self
       when :dative then msd[:case] = :dative
       when :accusative then msd[:case] = :accusative
       when :instrumental then msd[:case] = :instrumental
-      # TODO: how to handle :ablative case?
-      when :partitive then msd[:case2] = :partitive
-      # TODO: assign to :case2 when possible
-      when :locative then msd[:case] = :locative
+      when :ablative then msd[:case] = :genitive
+      when :partitive then msd[:case] = :genitive; msd[:case2] = :partitive
+      when :locative then msd[:case] = :genitive; msd[:case2] = :locative
       when :vocative then msd[:case] = :vocative
       # Numerus
       when :singular then msd[:number] = :singular
@@ -161,7 +160,7 @@ module Myasorubka::Mystem::Binary extend self
       when :feminine then msd[:gender] = :feminine
       when :masculine then msd[:gender] = :masculine
       when :neuter then msd[:gender] = :neuter
-      # TODO: how to handle :mas_fem gender?
+      when :mas_fem then msd[:gender] = :common
       # Perfectum-Imperfectum
       when :perfect then msd[:aspect] = :perfective
       when :imperfect then msd[:aspect] = :progressive
@@ -173,6 +172,8 @@ module Myasorubka::Mystem::Binary extend self
       when :animated then msd[:animate] = :yes
       when :inanimated then msd[:animate] = :no
       # Transitivity
+      when :definite then msd[:definiteness] = :full_art
+      when :indefinite then msd[:definiteness] = :short_art
       # Definiteness
       when :sim_conj then msd[:type] = :coordinating
       when :sub_conj then msd[:type] = :subordinating
@@ -181,6 +182,8 @@ module Myasorubka::Mystem::Binary extend self
       end
     end
 
-    msd
+    p msd.grammemes
+
+    msd.prune!
   end
 end
