@@ -182,8 +182,6 @@ module Myasorubka::Mystem::Binary extend self
       end
     end
 
-    p msd.grammemes
-
     msd.prune!
   end
 end
