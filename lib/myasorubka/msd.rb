@@ -194,7 +194,8 @@ class Myasorubka::MSD
   #
   def prune!
     unless category = language::CATEGORIES[pos]
-      grammemes.clean
+      self.pos = nil
+      grammemes.clear
       return self
     end
 

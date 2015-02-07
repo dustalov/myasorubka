@@ -83,6 +83,19 @@ module Myasorubka
         ('Vmp' =~ re).must_equal 0
         ('Nc-pl' =~ re).must_be_nil
       end
+
+      it 'can be pruned and became valid when the category is wrong' do
+        subject[:pos] = :zalupa
+        subject.prune!
+        subject.must_be :valid?
+      end
+
+      it 'can be pruned and became valid when an attribute is wrong' do
+        subject[:pos] = :verb
+        subject[:animate] = :yes
+        subject.prune!
+        subject.must_be :valid?
+      end
     end
 
     describe 'Generator' do
