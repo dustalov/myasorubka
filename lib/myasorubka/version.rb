@@ -5,5 +5,5 @@
 module Myasorubka
   # Version of Myasorubka.
   #
-  VERSION = '0.2.0.rc2'
+  VERSION = '0.2.0.rc3'
 end
