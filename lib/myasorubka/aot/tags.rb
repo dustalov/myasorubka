@@ -133,7 +133,7 @@ class Myasorubka::AOT::Tags
   #
   def self.russian(pos_line, grammemes_line)
     grammemes = grammemes_line.split(',').map do |grammeme|
-      UnicodeUtils.downcase(grammeme)
+      Myasorubka::Unicode.downcase(grammeme)
     end
 
     msd = Myasorubka::MSD.new(Myasorubka::MSD::Russian)
@@ -148,7 +148,7 @@ class Myasorubka::AOT::Tags
       pos_line = 'АББР'
     end
 
-    case UnicodeUtils.upcase(pos_line)
+    case Myasorubka::Unicode.upcase(pos_line)
     when 'С' then begin
       msd[:pos] = :noun
       msd[:type] = if (grammemes & [ 'имя', 'фам', 'отч', 'жарг', 'арх', 'проф', 'опч' ]).empty?
