@@ -5,7 +5,15 @@ Myasorubka is a morphological data processor that supports
 [AOT](http://aot.ru) and [MULTEXT-East](http://nl.ijs.si/ME/)
 notations.
 
+[![Build Status][travis_ci_badge]][travis_ci_link] [![Dependency Status][gemnasium_badge]][gemnasium_link]
+
+[travis_ci_badge]: https://travis-ci.org/dustalov/myasorubka.svg
+[travis_ci_link]: https://travis-ci.org/dustalov/myasorubka
+[gemnasium_badge]: https://gemnasium.com/dustalov/myasorubka.svg
+[gemnasium_link]: https://gemnasium.com/dustalov/myasorubka
+
 ## MULTEXT-East morphosyntactic descriptors
+
 It is possible to process the MULTEXT-East morphosyntactic descriptors
 (MSDs) in a convenient way.
 
@@ -51,6 +59,7 @@ Also, the `Myasorubka::MSD` class allows to write MSDs.
 ```
 
 ## AOT dictionaries
+
 Myasorubka provides simple parsers for lexicon in the [AOT](http://aot.ru)
 format, both for gramtab and dictionary files.
 
@@ -104,11 +113,8 @@ You can learn more about AOT lexicon from the
 4. Push to the branch (`git push origin my-new-feature`);
 5. Create new Pull Request.
 
-## Build Status [<img src="https://secure.travis-ci.org/dustalov/myasorubka.png"/>](http://travis-ci.org/dustalov/myasorubka)
-
-## Dependency Status [<img src="https://gemnasium.com/dustalov/myasorubka.png"/>](https://gemnasium.com/dustalov/myasorubka)
-
 ## Copyright
+
 Copyright (c) 2011-2015 [Dmitry Ustalov]. See LICENSE for details.
 
 [Dmitry Ustalov]: https://ustalov.name/
