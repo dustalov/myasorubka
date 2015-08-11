@@ -5,8 +5,10 @@ Myasorubka is a morphological data processor that supports
 [AOT](http://aot.ru) and [MULTEXT-East](http://nl.ijs.si/ME/)
 notations.
 
-[![Build Status][travis_ci_badge]][travis_ci_link] [![Dependency Status][gemnasium_badge]][gemnasium_link]
+[![Gem Version][badge_fury_badge]][badge_fury_link] [![Build Status][travis_ci_badge]][travis_ci_link] [![Dependency Status][gemnasium_badge]][gemnasium_link]
 
+[badge_fury_badge]: https://badge.fury.io/rb/myasorubka.svg
+[badge_fury_link]: https://badge.fury.io/rb/myasorubka
 [travis_ci_badge]: https://travis-ci.org/dustalov/myasorubka.svg
 [travis_ci_link]: https://travis-ci.org/dustalov/myasorubka
 [gemnasium_badge]: https://gemnasium.com/dustalov/myasorubka.svg
