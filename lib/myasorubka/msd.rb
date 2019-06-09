@@ -217,8 +217,8 @@ class Myasorubka::MSD
 
     category_code = msd.shift
 
-    @pos, category = language::CATEGORIES.find do |name, category|
-      category[:code] == category_code
+    @pos, category = language::CATEGORIES.find do |name, candidate|
+      candidate[:code] == category_code
     end
 
     raise InvalidDescriptor, msd_line unless @pos

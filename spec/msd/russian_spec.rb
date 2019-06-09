@@ -12,9 +12,8 @@ class Myasorubka::MSD
     it 'should be parsed' do
       subject.each do |row|
         sample, pos = row.delete('MSD').last, row.delete('CATEGORY').last
-        sample.gsub! /-+$/, ''
+        sample.gsub!(/-+$/, '')
 
-        category = Russian.const_get(pos.upcase)
         msd = Myasorubka::MSD.new(Russian)
         msd[:pos] = pos.downcase.to_sym
 

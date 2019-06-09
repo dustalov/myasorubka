@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'myasorubka'
   spec.version       = Myasorubka::VERSION
   spec.authors       = ['Dmitry Ustalov']
-  spec.email         = ['dmitry@eveel.ru']
+  spec.email         = ['dmitry.ustalov@gmail.com']
   spec.description   = 'Myasorubka is a morphological data processor.'
   spec.summary       = 'Myasorubka is a morphological data proceesor ' \
                        'that supports AOT and MULTEXT-East notations.'
