@@ -2,6 +2,6 @@ sudo: false
 language: ruby
 bundler_args: --without development
 rvm:
-  - ruby
-  - rbx
-  - jruby-19mode
+- ruby
+- rbx-3
+- jruby
